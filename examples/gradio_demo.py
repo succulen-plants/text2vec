@@ -3,7 +3,9 @@
 @author:XuMing(xuming624@qq.com)
 @description: pip install gradio
 """
-
+"""
+ Gradio是一个开源Python库，用于快速创建可交互的UI界面以展示你的模型。它可以帮助你快速验证和展示你的模型，也可以用于分享和集成你的模型
+"""
 import gradio as gr
 from text2vec import Similarity, EncoderType
 

@@ -7,12 +7,12 @@ import sys
 import time
 
 sys.path.append('..')
+#Jina是一个神经搜索框架
 from jina import Client
 from docarray import Document
 
 port = 50001
 c = Client(port=port)
-
 
 def encode(sentence):
     """Get one sentence embeddings from jina server."""

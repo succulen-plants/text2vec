@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
+"""
 
+首先，代码导入了所需要的一些Python库，其中包括：
+- `os` 和 `sys` 为操作文件与文件路径提供了接口；
+- `numpy` 用于处理大规模的数据数组；
+- `torch` 是一个开源机器学习框架；
+- `argparse` 是Python内置的命令行参数解析包；
+- `uvicorn` 是一个基于ASGI规范的服务器，用于运行FastAPI或其它ASGI应用；
+- `FastAPI` 是一个用于构建API的框架；
+- `CORSMiddleware` 是FastAPI的一个中间件，用于处理跨源请求；
+- `BaseModel` 和 `Field` 是Pydantic的模块，用于数据验证；
+- `SentenceModel` 是一个用于生成句子嵌入的模型。
+"""
 
 import argparse
 import uvicorn
@@ -30,6 +42,21 @@ parser.add_argument("--model_name_or_path", type=str, default="shibing624/text2v
 args = parser.parse_args()
 s_model = SentenceModel(args.model_name_or_path)
 
+"""
+ 这个函数 `_normalize_embedding_2D()` 的作用是将输入的二维数组（向量）标准化。这是一种常用的预处理步骤，它能使得向量的长度（或者说模）为1，而方向不变。
+
+具体来说，这个函数的实现过程如下：
+
+1. 首先，通过 `np.ascontiguousarray()` 函数，确保输入的向量在内存中是连续的。这样可以提高后续计算的效率。
+
+2. 接下来，计算输入向量的模（也就是长度）。这是通过先对向量进行点积运算（`.dot(vec)`），然后对结果求平方根（`np.sqrt()`）来完成的。点积运算可以简单理解为向量中对应元素的乘积之和，而整个计算过程其实就是求向量的欧几里得范数（即长度）。
+
+3. 如果求得的模不为零，则通过 `vec /= norm` 将向量每个元素都除以模的大小。这样就能得到一个模为1的单位向量。注意这里对原向量进行了直接修改（in-place operation），会改变原向量的值。
+
+4. 最后，返回这个单位向量。
+
+所以，任何通过这个函数处理的向量，都会被转化成一个单位向量，模为1。
+"""
 def _normalize_embedding_2D(vec: np.ndarray) -> np.ndarray:
   vec = np.ascontiguousarray(vec)
   norm = np.sqrt(vec.dot(vec))
@@ -55,6 +82,7 @@ async def index():
 @app.post('/emb')
 async def emb(item: Item):
     try:
+        print('item====', item)
         embeddings = s_model.encode(item.input)
         embeddings = np.array(embeddings)
         normalized_embeddings = _normalize_embedding_2D(embeddings)

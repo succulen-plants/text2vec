@@ -25,7 +25,7 @@ if __name__ == '__main__':
         'Two men pushed carts through the woods.',
         'A man is riding a white horse on an enclosed ground.',
         'A monkey is playing drums.',
-        'A cheetah is running behind its prey.'
+        'A cheetah is running behind its prey.',
         'The quick brown fox jumps over the lazy dog.',
     ]
     # 1. Compute text embedding

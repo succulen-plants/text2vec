@@ -35,7 +35,6 @@ def calc_similarity_scores(model, sents1, sents2, labels):
         f'spend time: {spend_time:.4f}, count:{len(sents1 + sents2)}, qps: {len(sents1 + sents2) / spend_time}')
     return spearman
 
-
 def main():
     parser = argparse.ArgumentParser('Text Matching task')
     parser.add_argument('--model_arch', default='bge', const='bge', nargs='?',
